@@ -1,0 +1,43 @@
+.container {
+    border: 1px solid red;
+    height: 100vh;
+
+    .main {
+        border: 1px solid red;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+
+        .login {
+            a {
+                font-size: x-large;
+                color: rgb(66, 66, 141);
+                transition: all 500ms ease-in-out;
+            }
+            a:hover {
+                font-size: xx-large;
+                color:rgb(7, 7, 7);
+            }
+        }
+    }
+    
+    .footer {
+        position: absolute;
+        bottom: 0;
+        left: 45%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        margin: 0.5rem;
+        padding: 0.5rem;
+        line-height: 1.5;
+        text-align: center;
+        
+        .logo {
+            position: relative;
+            top: 0.15rem;
+        } 
+    } 
+}
