@@ -85,7 +85,7 @@ export default function Home({ data }) {
 }
 
 export async function getStaticProps({ params }) {
-  const res = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${process.env.MOVIES_API_KEY}&language=en-US&page=1`)
+  const res = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=2822f47ee1842d9d67fc358813953f45&language=en-US&page=1`)
   const data = await res.json()
   return {
     props: {
