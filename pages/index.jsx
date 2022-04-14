@@ -1,9 +1,31 @@
 import Link from 'next/link'
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import styles from '../styles/Home.module.scss'
 
-export default function Home() {
+const users = [
+  {
+    id: 1,
+    name: "Jack",
+    recentReview: {
+      title: "Moon Knight",
+      director: "James Gunn",
+      lead: "Oscar Isaac"
+    }
+  },
+  {
+    id: 2,
+    name: "Po",
+    recentReview: {
+      title: "Titanic",
+      director: "James Cameron",
+      lead: "Leonardo DiCaprio"
+    }
+  }
+]
+
+export default function Home({ data }) {
+  console.log(data)
   return (
     <div className={styles.container}>
       <Head>
@@ -13,47 +35,37 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Read{' '}
-          <Link href="/posts/first-post">
-            <a>this page!</a>
-          </Link>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
+        <header className={styles.header}>
+          {data.results.map(movie => {
+            return (
+              <div key={movie.id}>
+                <h1>{movie.original_title}</h1>
+                <Image src={`https://image.tmdb.org/t/p/original/${movie.poster_path}?api_key=2822f47ee1842d9d67fc358813953f45&language=en-US}`} width={500} height={500}/>
+                <p>{movie.overview}</p>
+                <p>Released {movie.release_date}</p>
+              </div>
+            )
+          })}
+        </header>
+        <section>
+        {users.map(user => {
+          return (
+            <div key={user.id}>
+              <Link href={`/profiles/${user.id}`}>
+                <a>
+                  <h2>{user.name}</h2>
+                  <h5>Last Movie Seen...</h5>
+                  <p>{user.recentReview.title}</p>
+                  <ul>
+                    <li>Directed by {user.recentReview.director}</li>
+                    <li>Starring {user.recentReview.lead}</li>
+                  </ul>
+                </a>
+              </Link>
+            </div>
+          ) 
+        })}
+        </section>
       </main>
 
       <footer className={styles.footer}>
@@ -70,4 +82,14 @@ export default function Home() {
       </footer>
     </div>
   )
+}
+
+export async function getStaticProps({ params }) {
+  const res = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=2822f47ee1842d9d67fc358813953f45&language=en-US&page=1`)
+  const data = await res.json()
+  return {
+    props: {
+      data
+    }
+  }
 }
