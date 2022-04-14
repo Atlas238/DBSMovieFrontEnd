@@ -24,7 +24,8 @@ const users = [
   }
 ]
 
-export default function Home() {
+export default function Home({ data }) {
+  console.log(data)
   return (
     <div className={styles.container}>
       <Head>
@@ -34,8 +35,17 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <header>
-          <h1>Hello!</h1>
+        <header className={styles.header}>
+          {data.results.map(movie => {
+            return (
+              <div>
+                <h1>{movie.original_title}</h1>
+                <Image src={`https://image.tmdb.org/t/p/original/${movie.poster_path}?api_key=2822f47ee1842d9d67fc358813953f45&language=en-US}`} width={500} height={500}/>
+                <p>{movie.overview}</p>
+                <p>Released {movie.release_date}</p>
+              </div>
+            )
+          })}
         </header>
         <section>
         {users.map(user => {
@@ -72,4 +82,14 @@ export default function Home() {
       </footer>
     </div>
   )
+}
+
+export async function getStaticProps({ params }) {
+  const res = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${process.env.MOVIES_API_KEY}&language=en-US&page=1`)
+  const data = await res.json()
+  return {
+    props: {
+      data
+    }
+  }
 }
