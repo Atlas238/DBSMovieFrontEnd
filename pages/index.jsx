@@ -38,7 +38,7 @@ export default function Home({ data }) {
         <header className={styles.header}>
           {data.results.map(movie => {
             return (
-              <div>
+              <div key={movie.id}>
                 <h1>{movie.original_title}</h1>
                 <Image src={`https://image.tmdb.org/t/p/original/${movie.poster_path}?api_key=2822f47ee1842d9d67fc358813953f45&language=en-US}`} width={500} height={500}/>
                 <p>{movie.overview}</p>
